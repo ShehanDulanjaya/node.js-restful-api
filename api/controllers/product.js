@@ -76,30 +76,34 @@ exports.create_order =  (req,res,next)=>{
 
 exports.get_a_product =(req, res, next) => {
     const id = req.params.productID;
-    Product 
-        .find({_id :id})
-        .select('name price _id productImage')
-        .exec()
-        .then(doc => {
-            console.log("From database",doc);
-            if(doc){
-                res.status(200).json({
-                    product: doc,
-                    request:{
-                        type: 'GET',
-                        url: 'http://localhost:3000/product'
-                    }
-                 });
-            }
-            else{
-                res.status(404).json({message: 'No valid Product ID Found'});
-            }
+    const df =req.params.id;
+
+    console.log(id,df);
+    
+    // Product 
+    //     .find({_id :id})
+    //     .select('name price _id productImage')
+    //     .exec()
+    //     .then(doc => {
+    //         console.log("From database",doc);
+    //         if(doc){
+    //             res.status(200).json({
+    //                 product: doc,
+    //                 request:{
+    //                     type: 'GET',
+    //                     url: 'http://localhost:3000/product'
+    //                 }
+    //              });
+    //         }
+    //         else{
+    //             res.status(404).json({message: 'No valid Product ID Found'});
+    //         }
             
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({error: err});
-        });
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //         res.status(500).json({error: err});
+    //     });
         
 }
 

@@ -14,7 +14,7 @@ const Projectmem = require('../models/projectmembers.js');
 
 router.get('/all/:projectId', projectmemController.get_all_projects);
 
-router.get('/mem/:mem_id', projectmemController.get_all_members);
+router.get('/mem/:mem_id', projectmemController.get_a_id_members);
 
 router.post('/',checkAuth,projectmemController.addmem_projects);
 

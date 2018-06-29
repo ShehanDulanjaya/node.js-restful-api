@@ -19,6 +19,6 @@ router.get('/take/:userID',projectController.get_all_project);
 
 router.patch('/:projectID',checkAuth,projectController.update_project);
 
-router.delete('/:projectID',checkAuth,projectController.delete_project);
+router.delete('/:projectID&:userID',checkAuth,projectController.delete_project);
 
 module.exports = router;

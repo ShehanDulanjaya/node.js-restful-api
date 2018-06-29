@@ -74,7 +74,7 @@ exports.get_count_projects =(req, res, next)=>{
         .exec()
         .then(docs =>{
             docs.map(doc=>{
-                console.log(doc.liveAdmin[0].countAdmin);
+               // console.log(doc.liveAdmin[0].countAdmin);
 
                 var lo=0
                 var ca=0
@@ -121,7 +121,7 @@ exports.get_count_projects =(req, res, next)=>{
 
 //create projects with admin 
 exports.create_projects =  (req,res,next)=>{
-   console.log(req.body);
+  if(req.body.startDate<req.body.endDate){
     const project = new Project({
         _id: new mongoose.Types.ObjectId(),
         name:req.body.name,
@@ -151,6 +151,12 @@ exports.create_projects =  (req,res,next)=>{
                 error: err
             });
         });
+        
+    }else{
+        err
+        }
+
+    
 }
 //get a admin project
 exports.get_a_project =(req, res, next) => {
@@ -223,8 +229,15 @@ exports.get_all_project =(req, res, next) => {
 
 //update admin projects
 exports.update_project =(req, res, next) => {
-    
-   
+    const pid =req.params.projectID;
+    const userid=req.body.userId;
+    Project 
+    .find({_id:pid,AdminId:userid})
+    .exec()
+    .then(result => {
+       
+        if(result.length>=1)
+        {
     Project.update({_id:req.params.projectID},req.body)
         .exec()
         .then(result =>{
@@ -241,18 +254,38 @@ exports.update_project =(req, res, next) => {
         .catch(err =>{
             console.log(err);
             res.status(500).json({
-                error: err
+                error: err,
+                message: 'Project Updated Failed',
             });
         });
+    }
+    else{
+        err
+    }
+}).catch(err =>{
+    console.log(err);
+    res.status(500).json({
+        error: err,
+        message: 'Project Updated Failed',
+    });
+});
 }
 
 //dleyte admin project
 
 exports.delete_project =(req, res, next) => {
     
-    const id=req.params.projectID;
-
-    Project.deleteOne({_id: id})
+    
+    const pid =req.params.projectID;
+    const userid=req.params.userID;
+    Project 
+    .find({_id:pid,AdminId:userid})
+    .exec()
+    .then(result => {
+       
+        if(result.length>=1)
+        {
+    Project.deleteOne({_id: pid})
         .exec()
         .then(result => {
             res.status(200).json({
@@ -267,7 +300,20 @@ exports.delete_project =(req, res, next) => {
         .catch(err => {
             console.log(err);
             res.status(500).json({
-                error: err
+                error: err,
+                message:'Project delete Failed'
             });
         });
+    }else{
+        err
+    }
+
+}) .catch(err => {
+    console.log(err);
+    res.status(500).json({
+        error: err,
+        message:'Project delete Failed'
+
+    });
+})
 }

@@ -10,7 +10,7 @@ const user = require('../controllers/projectmembers.js');
 exports.get_A_member =(req, res, next) => {
     const x = req.params.name;
     Projectmem 
-    .find().or([{name:{ "$regex": x, "$options": "i" }},{startDate:{ "$regex": x, "$options": "i" }}])
+    .find().or([{name:{ "$regex": x, "$options": "i" }},{projectName:{ "$regex": x, "$options": "i" }}])
         .exec()
         .then(doc => {
            
@@ -41,7 +41,7 @@ exports.get_A_member =(req, res, next) => {
 //get count of other projects with completed and still live
 exports.get_count_projects =(req, res, next)=>{
     const memid=req.params.userId;
-    console.log(memid);
+    //console.log(memid);
     var nowDate = new Date();
     
 
@@ -195,7 +195,7 @@ exports.get_all_projects =(req, res, next)=>{
 }
 
 //get all member not admin projects
-exports.get_all_members =(req, res, next)=>{
+exports.get_a_id_members =(req, res, next)=>{
     const id = req.params.mem_id;
     Projectmem.find({mem_id:id})
         .exec()

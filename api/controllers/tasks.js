@@ -4,7 +4,7 @@ const mongoose= require('mongoose');
 //get all admin task
 exports.get_all_tasks =(req, res, next)=>{
     const projectid = req.params.projectID;
-    Tasks.find()
+    Tasks.find({projectID:projectid})
         .exec()
         .then(docs => {
             const response={
@@ -15,7 +15,9 @@ exports.get_all_tasks =(req, res, next)=>{
                         task:           doc.task,
                         description:    doc.description,
                         startdate:      doc.startdate,
-                        enddate:        doc.enddate
+                        enddate:        doc.enddate,
+                        projectID:      doc.projectID
+
                     }
                 })
             };
@@ -40,7 +42,7 @@ exports.get_all_tasks =(req, res, next)=>{
 
 //create new admin task
 exports.create_new_task = (req, res, next) => {
-
+    if(req.body.startdate<req.body.enddate){
     const task = new Tasks({
         _id: new mongoose.Types.ObjectId(),
         task: req.body.task,
@@ -62,7 +64,10 @@ exports.create_new_task = (req, res, next) => {
                 error: err
             });
         });
-};
+    }else{
+        err
+    }
+}
 
 //update task
 exports.update_task =(req, res, next) => {

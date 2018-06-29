@@ -115,7 +115,7 @@ exports.deleteuser=(req, res, next) => {
     }
 
     exports.get_all_users =(req, res, next)=>{
-        User.find()
+        User.find({email:{ $ne:req.params.userID }} )
              .select('_id name email ')
             .exec()
             .then(docs => {

@@ -37,7 +37,7 @@ router.get('/', productController.get_all_products);
 
 router.post('/', checkAuth, upload.single('productImage'), productController.create_order);
 
-router.get('/:productID',productController.get_a_product);
+router.get('/:productID&:id',productController.get_a_product);
 
 router.patch('/:productID',checkAuth,productController.update_product);
 
